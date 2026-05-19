@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Курс валют - ЛУКОЙЛ</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .currency-page h1 {
+            color: #8B0000;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #8B0000;
+            padding-bottom: 10px;
+        }
+
+        .calculator {
+            background-color: white;
+            padding: 30px;
+            border-radius: 5px;
+            border: 4px solid #8B0000;
+            margin-bottom: 30px;
+        }
+
+        .calculator h2 {
+            color: #660000;
+            margin-bottom: 20px;
+        }
+
+        .calc-row {
+            margin-bottom: 20px;
+        }
+
+        .calc-row label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .calc-row input,
+        .calc-row select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .calc-row input:focus,
+        .calc-row select:focus {
+            outline: none;
+            border-color: #8B0000;
+        }
+
+        .swap-btn {
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 10px 0;
+            transition: 0.3s;
+        }
+
+        .swap-btn:hover {
+            background-color: #660000;
+        }
+
+        .result {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .result strong {
+            color: #8B0000;
+            font-size: 24px;
+        }
+
+        .chart-container {
+            padding: 30px;
+            border-radius: 5px;
+            border: 4px solid #8B0000;
+        }
+
+        .chart-container h2 {
+            color: #660000;
+            margin-bottom: 20px;
+        }
+
+        .chart-info {
+            text-align: center;
+            padding: 20px;
+            background-color: #8B0000;
+            color: white;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .chart-info.show {
+            display: block;
+        }
+
+        .bar {
+            display: inline-block;
+            width: 40px;
+            background-color: #8B0000;
+            margin: 0 3px;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .bar:hover {
+            background-color: #A52A2A;
+        }
+
+        .bar.selected {
+            background-color: #660000;
+        }
+
+        .chart-wrapper {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            height: 300px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar">
+        <h2>ЛУКОЙЛ</h2>
+        <ul>
+            <li><a href="index.html">О компании</a></li>
+            <li><a href="news.html">Новости</a></li>
+            <li><a href="currency.html">Курс валют</a></li>
+            <li><a href="contacts.html">Контакты</a></li>
+            <li><a href="video.html">Видео</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div class="currency-page">
+            <h1>Курс валют</h1>
+
+            <div class="calculator">
+                <h2>Калькулятор валют (AZN - Азербайджанский манат)</h2>
+
+                <div class="calc-row">
+                    <label for="amount">Сумма:</label>
+                    <input type="number" id="amount" placeholder="Введите сумму" value="1000">
+                </div>
+
+                <div class="calc-row">
+                    <label for="direction">Направление конвертации:</label>
+                    <select id="direction">
+                        <option value="rub-to-azn">Рубли (RUB) в Азербайджанский манат (AZN)</option>
+                        <option value="azn-to-rub">Азербайджанский манат (AZN) в Рубли (RUB)</option>
+                    </select>
+                </div>
+
+                <button class="swap-btn" onclick="calculate()">Рассчитать</button>
+
+                <div class="result" id="result">
+                    <strong>Курс AZN на сегодня: загрузка...</strong>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h2>Динамика курса AZN за последний месяц</h2>
+                <div class="chart-wrapper" id="chartWrapper">
+                    <!-- Столбцы будут добавлены через JavaScript -->
+                </div>
+                <div class="chart-info" id="chartInfo">
+                    <strong>Дата:</strong> <span id="infoDate">-</span><br>
+                    <strong>Курс:</strong> <span id="infoRate">-</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <a href="#" class="to-top" onclick="scrollToTop(); return false;" title="Наверх">↑</a>
+
+    <script src="script.js"></script>
+    <script>
+        let currentRate = 0;
+        let chartData = [];
+
+        // Загрузка курса валют
+        function loadExchangeRate() {
+            fetch('https://www.cbr-xml-daily.ru/daily_json.js')
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    // AZN - код валюты
+                    if (data.Valute.AZN) {
+                        currentRate = data.Valute.AZN.Value;
+                        updateResult();
+                        generateChartData(data);
+                    } else {
+                        document.getElementById('result').innerHTML =
+                            '<strong>Ошибка загрузки курса</strong>';
+                    }
+                })
+                .catch(function (error) {
+                    console.error('Ошибка:', error);
+                    document.getElementById('result').innerHTML =
+                        '<strong>Ошибка загрузки курса. Попробуйте позже.</strong>';
+                });
+        }
+
+        // Обновление результата
+        function updateResult() {
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+            const direction = document.getElementById('direction').value;
+            const resultDiv = document.getElementById('result');
+
+            if (direction === 'rub-to-azn') {
+                const aznAmount = (amount / currentRate).toFixed(2);
+                resultDiv.innerHTML =
+                    '<strong>' + amount.toFixed(2) + ' RUB</strong> = ' +
+                    '<strong>' + aznAmount + ' AZN</strong><br>' +
+                    'Курс: 1 AZN = ' + currentRate.toFixed(2) + ' RUB';
+            } else {
+                const rubAmount = (amount * currentRate).toFixed(2);
+                resultDiv.innerHTML =
+                    '<strong>' + amount.toFixed(2) + ' AZN</strong> = ' +
+                    '<strong>' + rubAmount + ' RUB</strong><br>' +
+                    'Курс: 1 AZN = ' + currentRate.toFixed(2) + ' RUB';
+            }
+        }
+
+        // Расчет
+        function calculate() {
+            if (currentRate > 0) {
+                updateResult();
+            }
+        }
+
+        // Загрузка данных для графика с ресурса ЦБР за последние 30 дней
+        function generateChartData(data) {
+            chartData = [];
+            const today = new Date();
+            const startDate = new Date(today);
+            startDate.setDate(startDate.getDate() - 30);
+
+            // Форматируем даты в формат dd/MM/yyyy для ЦБР API
+            const dateReq1 = String(startDate.getDate()).padStart(2, '0') + '/' +
+                String(startDate.getMonth() + 1).padStart(2, '0') + '/' +
+                startDate.getFullYear();
+
+            const dateReq2 = String(today.getDate()).padStart(2, '0') + '/' +
+                String(today.getMonth() + 1).padStart(2, '0') + '/' +
+                today.getFullYear();
+
+            // VAL_NM_RQ - код валюты AZN в ЦБР
+            const valCode = 'R01060';
+
+            // Загружаем динамику курса с API ЦБР (через CORS прокси)
+            const apiUrl = 'http://www.cbr.ru/scripts/XML_dynamic.asp?date_req1=' + dateReq1 +
+                '&date_req2=' + dateReq2 + '&VAL_NM_RQ=' + valCode;
+            // Используем CORS прокси для обхода ограничений, чтобы не было ошибки
+            const corsProxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(apiUrl);
+
+            fetch(corsProxyUrl)
+                .then(function (response) {
+                    return response.text();
+                })
+                .then(function (xmlString) {
+                    // Парсим XML
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+
+                    // Если XML содержит ошибку парсинга
+                    if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
+                        console.error('Ошибка парсинга XML');
+                        renderChart();
+                        return;
+                    }
+
+                    // Получаем все записи о курсах (Record элементы)
+                    const records = xmlDoc.getElementsByTagName('Record');
+
+                    for (let i = 0; i < records.length; i++) {
+                        const record = records[i];
+                        const date = record.getAttribute('Date');
+                        const valueStr = record.getElementsByTagName('Value')[0].textContent;
+
+                        // Заменяем запятую на точку для правильного числового формата
+                        const rate = parseFloat(valueStr.replace(',', '.'));
+
+                        chartData.push({
+                            date: new Date(date).toLocaleDateString('ru-RU'),
+                            rate: rate.toFixed(4),
+                            fullDate: date
+                        });
+                    }
+
+                    renderChart();
+                })
+                .catch(function (error) {
+                    console.error('Ошибка загрузки данных курса:', error);
+                    renderChart();
+                });
+        }
+
+        // Отрисовка графика
+        function renderChart() {
+            const wrapper = document.getElementById('chartWrapper');
+            wrapper.innerHTML = '';
+
+            const maxRate = Math.max.apply(null, chartData.map(function (d) { return parseFloat(d.rate); }));
+            const minRate = Math.min.apply(null, chartData.map(function (d) { return parseFloat(d.rate); }));
+            const range = maxRate - minRate;
+
+            chartData.forEach(function (item, index) {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+
+                // Высота столбца относительно диапазона
+                const height = ((item.rate - minRate) / range) * 250 + 20;
+                bar.style.height = height + 'px';
+
+                bar.onclick = function () {
+                    // Убираем выделение со всех столбцов
+                    document.querySelectorAll('.bar').forEach(function (b) {
+                        b.classList.remove('selected');
+                    });
+
+                    // Выделяем текущий
+                    this.classList.add('selected');
+
+                    // Показываем информацию
+                    document.getElementById('infoDate').textContent = item.date;
+                    document.getElementById('infoRate').textContent = item.rate + ' RUB';
+                    document.getElementById('chartInfo').classList.add('show');
+                };
+
+                wrapper.appendChild(bar);
+            });
+        }
+
+        // Загружаем курс при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function () {
+            loadExchangeRate();
+        });
+    </script>
+</body>
+
+</html>
