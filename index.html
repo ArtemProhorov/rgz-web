@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О компании - ЛУКОЙЛ</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .about-section {
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .about-section h1 {
+            color: #8B0000;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #8B0000;
+            padding-bottom: 10px;
+        }
+
+        .about-section h2 {
+            color: #660000;
+            margin: 20px 0 10px 0;
+        }
+
+        .about-section p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .logo-container img {
+            max-width: 300px;
+            height: auto;
+        }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 5px;
+            font-weight: bold;
+        }
+
+        .info-block {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            flex: 1;
+            min-width: 250px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 4px solid #8B0000;
+        }
+
+        .info-card strong {
+            color: #8B0000;
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Меню слева -->
+    <nav class="sidebar">
+        <h2>ЛУКОЙЛ</h2>
+        <ul>
+            <li><a href="index.html">О компании</a></li>
+            <li><a href="news.html">Новости</a></li>
+            <li><a href="currency.html">Курс валют</a></li>
+            <li><a href="contacts.html">Контакты</a></li>
+            <li><a href="video.html">Видео</a></li>
+        </ul>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+        <section class="about-section">
+            <h1>О компании ЛУКОЙЛ</h1>
+
+            <div class="logo-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Lukoil_company_logo.svg/250px-Lukoil_company_logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+                    alt="ЛУКОЙЛ Логотип">
+            </div>
+
+            <h2>Общая информация</h2>
+            <p>
+                <span class="highlight">ПАО «ЛУКОЙЛ»</span> — одна из крупнейших вертикально интегрированных
+                нефтегазовых компаний в мире. Компания была основана в
+                <strong>1991 году</strong> и за более чем 30 лет работы стала лидером
+                российской нефтяной отрасли.
+            </p>
+
+            <div class="info-block">
+                <div class="info-card">
+                    <strong>Год основания:</strong>
+                    1991 год
+                </div>
+                <div class="info-card">
+                    <strong>Основатели:</strong>
+                    Вагит Алекперов и другие
+                </div>
+                <div class="info-card">
+                    <strong>Штаб-квартира:</strong>
+                    Москва, Россия
+                </div>
+                <div class="info-card">
+                    <strong>Тикер на бирже:</strong>
+                    LKOH
+                </div>
+            </div>
+
+            <h2>История компании</h2>
+            <p>
+                Компания <em>ЛУКОЙЛ</em> была создана в 1991 году путем объединения
+                трех крупнейших нефтедобывающих предприятий Западной Сибири:
+                «Лангепаснефтегаз», «Урайнефтегаз» и «Когалымнефтегаз».
+                <u>Название компании образовано из первых букв этих городов</u>
+                и слова «ойл» (oil — нефть).
+            </p>
+
+            <p>
+                За годы своего существования ЛУКОЙЛ прошел путь от небольшой
+                нефтедобывающей компании до одного из мировых лидеров
+                нефтегазовой отрасли. Сегодня компания ведет деятельность
+                более чем в <strong>30 странах мира</strong>.
+            </p>
+
+            <h2>Основные направления деятельности</h2>
+            <p>
+                ЛУКОЙЛ осуществляет полный цикл работ в нефтегазовой отрасли:
+            </p>
+            <ul style="margin-left: 30px; margin-bottom: 15px;">
+                <li><strong>Разведка и добыча</strong> нефти и газа</li>
+                <li><strong>Производство</strong> нефтепродуктов и нефтехимии</li>
+                <li><strong>Сбыт</strong> нефтепродуктов через сеть АЗС</li>
+                <li><strong>Энергетика</strong> и генерация электроэнергии</li>
+            </ul>
+
+            <h2>Достижения компании</h2>
+            <p>
+                На сегодняшний день ЛУКОЙЛ входит в число крупнейших частных
+                нефтегазовых компаний мира. Компания обладает значительными
+                запасами углеводородов и продолжает активно развивать
+                <span class="highlight">новые проекты</span> как в России, так и за рубежом.
+            </p>
+
+            <p>
+                <a href="https://lukoil.ru" target="_blank" style="color: #8B0000;">
+                    Официальный сайт компании
+                </a>
+            </p>
+        </section>
+    </main>
+
+    <!-- Кнопка наверх -->
+    <a href="#" class="to-top" onclick="scrollToTop()">↑</a>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
