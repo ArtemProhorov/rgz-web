@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты - ЛУКОЙЛ</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .contacts-page h1 {
+            color: #8B0000;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #8B0000;
+            padding-bottom: 10px;
+        }
+
+        .contacts-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+            padding: 30px;
+            border-radius: 5px;
+            border: 4px solid #8B0000;
+        }
+
+        .contact-info h2 {
+            color: #660000;
+            margin-bottom: 20px;
+        }
+
+        .contact-item {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+
+        .contact-item strong {
+            display: block;
+            color: #8B0000;
+            margin-bottom: 5px;
+        }
+
+        .contact-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .map-container {
+            flex: 2;
+            min-width: 300px;
+            padding: 30px;
+            border-radius: 5px;
+            border: 4px solid #8B0000;
+        }
+
+        .map-container h2 {
+            color: #660000;
+            margin-bottom: 20px;
+        }
+
+        .map-wrapper {
+            width: 100%;
+            height: 450px;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar">
+        <h2>ЛУКОЙЛ</h2>
+        <ul>
+            <li><a href="index.html">О компании</a></li>
+            <li><a href="news.html">Новости</a></li>
+            <li><a href="currency.html">Курс валют</a></li>
+            <li><a href="contacts.html">Контакты</a></li>
+            <li><a href="video.html">Видео</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div class="contacts-page">
+            <h1>Контактная информация</h1>
+
+            <div class="contacts-container">
+                <div class="contact-info">
+                    <h2>Контакты</h2>
+
+                    <div class="contact-item">
+                        <strong>Центральный офис:</strong>
+                        <p>
+                            119991, г. Москва,<br>
+                            Сретенский бульвар, д. 11<br>
+                            Бизнес-центр «Новые Сретенские ворота»
+                        </p>
+                    </div>
+
+                    <div class="contact-item">
+                        <strong>Телефон:</strong>
+                        <p>
+                            +7 (495) 627-44-00<br>
+                            Горячая линия: 8 (800) 700-45-55 (бесплатно)
+                        </p>
+                    </div>
+
+                    <div class="contact-item">
+                        <strong>Email:</strong>
+                        <p>
+                            <a href="mailto:info@lukoil.com" style="color: #8B0000;">
+                                info@lukoil.com
+                            </a>
+                        </p>
+                    </div>
+
+                    <div class="contact-item">
+                        <strong>Пресс-служба:</strong>
+                        <p>
+                            Телефон: +7 (495) 627-44-44<br>
+                            Email: <a href="mailto:press@lukoil.com" style="color: #8B0000;">
+                                press@lukoil.com
+                            </a>
+                        </p>
+                    </div>
+
+                    <div class="contact-item">
+                        <strong>Режим работы:</strong>
+                        <p>
+                            Пн-Пт: 9:00 - 18:00<br>
+                            Сб-Вс: выходной
+                        </p>
+                    </div>
+
+                    <div class="contact-item">
+                        <strong>АЗС ЛУКОЙЛ:</strong>
+                        <p>
+                            Найдите ближайшую заправку на карте или по телефону<br>
+                            8 (800) 700-45-55
+                        </p>
+                    </div>
+                </div>
+
+                <div class="map-container">
+                    <h2>Мы на карте</h2>
+                    <iframe
+                        src="https://yandex.ru/map-widget/v1/?um=constructor%3A286852e11fe3d800e942653ab43ba6254ef744280dbbb3c56b7041a4f79e4cb2&amp;source=constructor"
+                        width="100%" height="400" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <a href="#" class="to-top" onclick="scrollToTop()">↑</a>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
