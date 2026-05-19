@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новости - ЛУКОЙЛ</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .news-container {
+            max-width: 1200px;
+        }
+
+        .news-container h1 {
+            color: #8B0000;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #8B0000;
+            padding-bottom: 10px;
+        }
+
+        .news-card {
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 4px solid #8B0000;
+            transition: 0.3s;
+        }
+
+        .news-date {
+            color: #8B0000;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .news-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .news-preview {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .news-full {
+            display: none;
+            margin: 15px 0;
+            padding-top: 15px;
+            color: #444;
+        }
+
+        .news-full.show {
+            display: block;
+            border-top: 2px solid #8B0000;
+        }
+
+        .show-more-btn {
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .show-more-btn:hover {
+            background-color: #660000;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar">
+        <h2>ЛУКОЙЛ</h2>
+        <ul>
+            <li><a href="index.html">О компании</a></li>
+            <li><a href="news.html">Новости</a></li>
+            <li><a href="currency.html">Курс валют</a></li>
+            <li><a href="contacts.html">Контакты</a></li>
+            <li><a href="video.html">Видео</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div class="news-container">
+            <h1>Новости компании</h1>
+
+            <!-- Новость 1 -->
+            <div class="news-card">
+                <div class="news-date">15 мая 2026</div>
+                <div class="news-title">ЛУКОЙЛ увеличил добычу нефти на 5%</div>
+                <div class="news-preview">
+                    Компания сообщила о росте добычи углеводородов в первом квартале 2026 года.
+                    Основные показатели превысили плановые значения...
+                </div>
+                <div class="news-full" id="news1">
+                    <p>ПАО «ЛУКОЙЛ» объявило о значительном увеличении объемов добычи нефти и газа
+                        в первом квартале 2026 года. Рост составил 5% по сравнению с аналогичным
+                        периодом прошлого года.</p>
+                    <p>Основные месторождения показали стабильную работу. Особенно отличились
+                        Западно-Сибирские активы компании, где удалось внедрить новые технологии
+                        повышения нефтеотдачи пластов.</p>
+                </div>
+                <button class="show-more-btn" onclick="toggleNews('news1', this)">Показать полностью</button>
+            </div>
+
+            <!-- Новость 2 -->
+            <div class="news-card">
+                <div class="news-date">10 мая 2026</div>
+                <div class="news-title">Открытие новой АЗС в Москве</div>
+                <div class="news-preview">
+                    Сеть заправочных станций ЛУКОЙЛ пополнилась современным топливно-заправочным
+                    комплексом на юго-западе столицы...
+                </div>
+                <div class="news-full" id="news2">
+                    <p>В Москве открылась новая современная автозаправочная станция ЛУКОЙЛ.
+                        Комплекс оснащен самым современным оборудованием и предлагает клиентам
+                        широкий спектр услуг.</p>
+                    <p>На станции представлены все виды топлива, включая экологичное Евро-100.
+                        Также работают магазин, кафе и мойка самообслуживания.</p>
+                </div>
+                <button class="show-more-btn" onclick="toggleNews('news2', this)">Показать полностью</button>
+            </div>
+
+            <!-- Новость 3 -->
+            <div class="news-card">
+                <div class="news-date">5 мая 2026</div>
+                <div class="news-title">ЛУКОЙЛ инвестирует в экологические проекты</div>
+                <div class="news-preview">
+                    Компания объявила о выделении 50 млрд рублей на программы по снижению
+                    воздействия на окружающую среду...
+                </div>
+                <div class="news-full" id="news3">
+                    <p>ПАО «ЛУКОЙЛ» продолжает реализацию масштабной экологической программы.
+                        В 2026 году на природоохранные мероприятия выделено более 50 млрд рублей.</p>
+                    <p>Средства будут направлены на модернизацию очистных сооружений,
+                        внедрение технологий улавливания углерода и рекультивацию земель.</p>
+                </div>
+                <button class="show-more-btn" onclick="toggleNews('news3', this)">Показать полностью</button>
+            </div>
+
+            <!-- Новость 4 -->
+            <div class="news-card">
+                <div class="news-date">28 апреля 2026</div>
+                <div class="news-title">Запуск нового нефтеперерабатывающего комплекса</div>
+                <div class="news-preview">
+                    На одном из НПЗ компании введен в эксплуатацию современный комплекс
+                    глубокой переработки нефти...
+                </div>
+                <div class="news-full" id="news4">
+                    <p>ЛУКОЙЛ запустил новый комплекс глубокой переработки нефти мощностью
+                        2 млн тонн в год. Установка позволит увеличить глубину переработки
+                        нефти до 98%.</p>
+                    <p>Комплекс построен с применением лучших мировых технологий и обеспечивает
+                        производство высококачественных нефтепродуктов.</p>
+                </div>
+                <button class="show-more-btn" onclick="toggleNews('news4', this)">Показать полностью</button>
+            </div>
+
+            <!-- Новость 5 -->
+            <div class="news-card">
+                <div class="news-date">20 апреля 2026</div>
+                <div class="news-title">Партнерство с ведущими университетами</div>
+                <div class="news-preview">
+                    ЛУКОЙЛ подписал соглашения о сотрудничестве с пятью техническими
+                    вузами страны для подготовки специалистов...
+                </div>
+                <div class="news-full" id="news5">
+                    <p>Компания расширяет программу подготовки молодых специалистов.
+                        Подписаны соглашения с ведущими техническими университетами России.</p>
+                    <p>Студенты получат возможность проходить практику на предприятиях ЛУКОЙЛ,
+                        участвовать в реальных проектах и получать стипендии компании.</p>
+                </div>
+                <button class="show-more-btn" onclick="toggleNews('news5', this)">Показать полностью</button>
+            </div>
+
+            <!-- Новость 6 -->
+            <div class="news-card">
+                <div class="news-date">15 апреля 2026</div>
+                <div class="news-title">Новые месторождения в Арктике</div>
+                <div class="news-preview">
+                    Компания получила лицензии на разработку трех перспективных
+                    месторождений на арктическом шельфе...
+                </div>
+                <div class="news-full" id="news6">
+                    <p>ЛУКОЙЛ продолжил расширение ресурсной базы в Арктическом регионе.
+                        Получены лицензии на три новых месторождения с общими запасами
+                        более 100 млн тонн нефтяного эквивалента.</p>
+                </div>
+                <button class="show-more-btn" onclick="toggleNews('news6', this)">Показать полностью</button>
+            </div>
+
+            <!-- Новость 7 -->
+            <div class="news-card">
+                <div class="news-date">10 апреля 2026</div>
+                <div class="news-title">Цифровизация производства</div>
+                <div class="news-preview">
+                    ЛУКОЙЛ внедрил систему искусственного интеллекта для оптимизации
+                    процессов добычи нефти...
+                </div>
+                <div class="news-full" id="news7">
+                    <p>Компания завершила внедрение передовой системы на основе искусственного
+                        интеллекта. Система анализирует данные с тысяч датчиков и помогает
+                        оптимизировать режимы работы скважин.</p>
+                </div>
+                <button class="show-more-btn" onclick="toggleNews('news7', this)">Показать полностью</button>
+            </div>
+
+            <!-- Новость 8 -->
+            <div class="news-card">
+                <div class="news-date">5 апреля 2026</div>
+                <div class="news-title">Социальная поддержка регионов</div>
+                <div class="news-preview">
+                    ЛУКОЙЛ направил 10 млрд рублей на социальные программы в регионах
+                    присутствия...
+                </div>
+                <div class="news-full" id="news8">
+                    <p>Компания продолжает активную социальную политику. В 2026 году на
+                        поддержку регионов присутствия выделено 10 млрд рублей.</p>
+                    <p>Средства пойдут на строительство социальных объектов, поддержку
+                        образования и здравоохранения.</p>
+                </div>
+                <button class="show-more-btn" onclick="toggleNews('news8', this)">Показать полностью</button>
+            </div>
+
+            <!-- Новость 9 -->
+            <div class="news-card">
+                <div class="news-date">1 апреля 2026</div>
+                <div class="news-title">Развитие нефтегазохимии</div>
+                <div class="news-preview">
+                    Компания анонсировала строительство нового завода по производству
+                    полимеров...
+                </div>
+                <div class="news-full" id="news9">
+                    <p>ЛУКОЙЛ планирует построить современный завод по производству
+                        полипропилена мощностью 500 тыс. тонн в год. Инвестиции составят
+                        около 80 млрд рублей.</p>
+                </div>
+                <button class="show-more-btn" onclick="toggleNews('news9', this)">Показать полностью</button>
+            </div>
+
+            <!-- Новость 10 -->
+            <div class="news-card">
+                <div class="news-date">25 марта 2026</div>
+                <div class="news-title">Награды за качество продукции</div>
+                <div class="news-preview">
+                    Бензин и дизельное топливо ЛУКОЙЛ получили международные сертификаты
+                    качества...
+                </div>
+                <div class="news-full" id="news10">
+                    <p>Продукция компании получила высокие оценки на международном конкурсе
+                        качества. Бензин Евро-100 и дизельное топливо отмечены специальными
+                        наградами.</p>
+                    <p>Это подтверждает приверженность ЛУКОЙЛ высоким стандартам качества
+                        и постоянному совершенствованию продукции.</p>
+                </div>
+                <button class="show-more-btn" onclick="toggleNews('news10', this)">Показать полностью</button>
+            </div>
+
+        </div>
+    </main>
+
+    <a href="#" class="to-top" onclick="scrollToTop()">↑</a>
+
+    <script src="script.js"></script>
+    <script>
+        function toggleNews(newsId, btn) {
+            const newsFull = document.getElementById(newsId);
+            if (newsFull.classList.contains('show')) {
+                newsFull.classList.remove('show');
+                btn.textContent = 'Показать полностью';
+            } else {
+                newsFull.classList.add('show');
+                btn.textContent = 'Скрыть';
+            }
+        }
+    </script>
+</body>
+
+</html>
