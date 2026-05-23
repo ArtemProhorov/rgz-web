@@ -208,7 +208,7 @@
                     if (data.Valute.AZN) {
                         currentRate = data.Valute.AZN.Value;
                         updateResult();
-                        generateChartData(data);
+                        generateChartData();
                     } else {
                         document.getElementById('result').innerHTML =
                             '<strong>Ошибка загрузки курса</strong>';
@@ -251,105 +251,77 @@
 
         // Загрузка данных для графика с ресурса ЦБР за последние 30 дней
         function generateChartData(data) {
+            // Загрузка данных для графика через надежное API
+function generateChartData() {
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 30);
+
+    const start = startDate.toISOString().split('T')[0];
+    const end = endDate.toISOString().split('T')[0];
+
+    // API возвращает курс RUB → AZN (сколько AZN за 1 RUB)
+    const url = `https://api.exchangerate.host/timeseries?start_date=${start}&end_date=${end}&base=RUB&symbols=AZN`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (!data.rates || Object.keys(data.rates).length === 0) {
+                throw new Error('Нет данных');
+            }
+
             chartData = [];
-            const today = new Date();
-            const startDate = new Date(today);
-            startDate.setDate(startDate.getDate() - 30);
-
-            // Форматируем даты в формат dd/MM/yyyy для ЦБР API
-            const dateReq1 = String(startDate.getDate()).padStart(2, '0') + '/' +
-                String(startDate.getMonth() + 1).padStart(2, '0') + '/' +
-                startDate.getFullYear();
-
-            const dateReq2 = String(today.getDate()).padStart(2, '0') + '/' +
-                String(today.getMonth() + 1).padStart(2, '0') + '/' +
-                today.getFullYear();
-
-            // VAL_NM_RQ - код валюты AZN в ЦБР
-            const valCode = 'R01060';
-
-            // Загружаем динамику курса с API ЦБР (через CORS прокси)
-            const apiUrl = 'http://www.cbr.ru/scripts/XML_dynamic.asp?date_req1=' + dateReq1 +
-                '&date_req2=' + dateReq2 + '&VAL_NM_RQ=' + valCode;
-            // Используем CORS прокси для обхода ограничений, чтобы не было ошибки
-            const corsProxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(apiUrl);
-
-            fetch(corsProxyUrl)
-                .then(function (response) {
-                    return response.text();
-                })
-                .then(function (xmlString) {
-                    // Парсим XML
-                    const parser = new DOMParser();
-                    const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
-
-                    // Если XML содержит ошибку парсинга
-                    if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
-                        console.error('Ошибка парсинга XML');
-                        renderChart();
-                        return;
-                    }
-
-                    // Получаем все записи о курсах (Record элементы)
-                    const records = xmlDoc.getElementsByTagName('Record');
-
-                    for (let i = 0; i < records.length; i++) {
-                        const record = records[i];
-                        const date = record.getAttribute('Date');
-                        const valueStr = record.getElementsByTagName('Value')[0].textContent;
-
-                        // Заменяем запятую на точку для правильного числового формата
-                        const rate = parseFloat(valueStr.replace(',', '.'));
-
-                        chartData.push({
-                            date: new Date(date).toLocaleDateString('ru-RU'),
-                            rate: rate.toFixed(4),
-                            fullDate: date
-                        });
-                    }
-
-                    renderChart();
-                })
-                .catch(function (error) {
-                    console.error('Ошибка загрузки данных курса:', error);
-                    renderChart();
+            for (const [date, rates] of Object.entries(data.rates)) {
+                const rubToAzn = rates.AZN;            // AZN за 1 RUB
+                const aznToRub = 1 / rubToAzn;         // RUB за 1 AZN (то, что нам нужно)
+                chartData.push({
+                    date: new Date(date).toLocaleDateString('ru-RU'),
+                    rate: aznToRub.toFixed(4),
+                    fullDate: date
                 });
+            }
+            renderChart();
+        })
+        .catch(error => {
+            console.error('Ошибка загрузки графика:', error);
+            const wrapper = document.getElementById('chartWrapper');
+            wrapper.innerHTML = '<p style="text-align:center; color:#8B0000;">Не удалось загрузить динамику курса. Попробуйте позже.</p>';
+        });
+}
         }
 
         // Отрисовка графика
         function renderChart() {
             const wrapper = document.getElementById('chartWrapper');
-            wrapper.innerHTML = '';
+    wrapper.innerHTML = '';
 
-            const maxRate = Math.max.apply(null, chartData.map(function (d) { return parseFloat(d.rate); }));
-            const minRate = Math.min.apply(null, chartData.map(function (d) { return parseFloat(d.rate); }));
-            const range = maxRate - minRate;
+    if (!chartData.length) {
+        wrapper.innerHTML = '<p style="text-align:center;">Нет данных за выбранный период</p>';
+        return;
+    }
 
-            chartData.forEach(function (item, index) {
-                const bar = document.createElement('div');
-                bar.className = 'bar';
+    const maxRate = Math.max(...chartData.map(d => parseFloat(d.rate)));
+    const minRate = Math.min(...chartData.map(d => parseFloat(d.rate)));
+    const range = maxRate - minRate;
 
-                // Высота столбца относительно диапазона
-                const height = ((item.rate - minRate) / range) * 250 + 20;
-                bar.style.height = height + 'px';
+    chartData.forEach((item, index) => {
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        let height = 20; // минимальная высота
+        if (range !== 0) {
+            height = ((item.rate - minRate) / range) * 250 + 20;
+        }
+        bar.style.height = height + 'px';
 
-                bar.onclick = function () {
-                    // Убираем выделение со всех столбцов
-                    document.querySelectorAll('.bar').forEach(function (b) {
-                        b.classList.remove('selected');
-                    });
-
-                    // Выделяем текущий
-                    this.classList.add('selected');
-
-                    // Показываем информацию
-                    document.getElementById('infoDate').textContent = item.date;
-                    document.getElementById('infoRate').textContent = item.rate + ' RUB';
-                    document.getElementById('chartInfo').classList.add('show');
-                };
-
-                wrapper.appendChild(bar);
-            });
+        bar.onclick = function () {
+            document.querySelectorAll('.bar').forEach(b => b.classList.remove('selected'));
+            this.classList.add('selected');
+            document.getElementById('infoDate').textContent = item.date;
+            document.getElementById('infoRate').textContent = item.rate + ' RUB';
+            document.getElementById('chartInfo').classList.add('show');
+        };
+        wrapper.appendChild(bar);
+    });
         }
 
         // Загружаем курс при загрузке страницы
